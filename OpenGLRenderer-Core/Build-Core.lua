@@ -1,23 +1,35 @@
-project "App"
-   kind "ConsoleApp"
+project "OpenGLRenderer-Core"
+   kind "StaticLib"
    language "C++"
    cppdialect "C++20"
    targetdir "Binaries/%{cfg.buildcfg}"
    staticruntime "off"
 
-   files { "Source/**.h", "Source/**.cpp" }
+   files { "Source/**.h", "Source/**.cpp", "Source/**.hpp", "Source/**.c" }
 
    includedirs
    {
       "Source",
+      "../Vendor/GLEW/include",
+      "../Vendor/GLFW/include"
+   }
 
-	  -- Include Core
-	  "../Core/Source"
+   libdirs
+   {
+      "../Vendor/GLEW/lib/Release/Win32",
+      "../Vendor/GLFW/lib-vc2022"
    }
 
    links
    {
-      "Core"
+      "opengl32",
+      "glew32s",
+      "glfw3" 
+   }
+
+   defines
+   {
+      "GLEW_STATIC"
    }
 
    targetdir ("../Binaries/" .. OutputDir .. "/%{prj.name}")
@@ -25,7 +37,7 @@ project "App"
 
    filter "system:windows"
        systemversion "latest"
-       defines { "WINDOWS" }
+       defines { }
 
    filter "configurations:Debug"
        defines { "DEBUG" }
