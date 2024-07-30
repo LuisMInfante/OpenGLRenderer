@@ -1,5 +1,5 @@
 workspace "OpenGLRenderer"
-   architecture "x86"
+   architecture ("x86")
    configurations { "Debug", "Release", "Dist" }
    startproject "OpenGLRenderer-App"
 

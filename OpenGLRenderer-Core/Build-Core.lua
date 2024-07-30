@@ -22,14 +22,15 @@ project "OpenGLRenderer-Core"
 
    links
    {
+      "OpenGLRenderer-Core",
       "opengl32",
       "glew32s",
-      "glfw3" 
+      "glfw3"
    }
 
-   defines
+   defines 
    {
-      "GLEW_STATIC"
+       "GLEW_STATIC"
    }
 
    targetdir ("../Binaries/" .. OutputDir .. "/%{prj.name}")

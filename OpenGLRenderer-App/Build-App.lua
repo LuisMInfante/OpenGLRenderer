@@ -10,14 +10,30 @@ project "OpenGLRenderer-App"
    includedirs
    {
       "Source",
+      "../Vendor/GLEW/include",
+      "../Vendor/GLFW/include",
 
 	  -- Include Core
 	  "../OpenGLRenderer-Core/Source"
    }
 
+   libdirs
+   {
+      "../Vendor/GLEW/lib/Release/Win32",
+      "../Vendor/GLFW/lib-vc2022"
+   }
+
    links
    {
-      "OpenGLRenderer-Core"
+      "OpenGLRenderer-Core",
+      "opengl32",
+      "glew32s",
+      "glfw3"
+   }
+
+   defines 
+   {
+       "GLEW_STATIC"
    }
 
    targetdir ("../Binaries/" .. OutputDir .. "/%{prj.name}")
