@@ -13,7 +13,7 @@ project "OpenGLRenderer-Core"
       "../Vendor/GLEW/include",
       "../Vendor/GLFW/include"
    }
-
+   
    libdirs
    {
       "../Vendor/GLEW/lib/Release/Win32",

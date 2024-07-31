@@ -1,9 +1,10 @@
 #include "Core.h"
 
 #include <iostream>
+#include <vector>
 
-namespace Core {
-
+namespace Core 
+{
 	void PrintOpenGLVersion()
 	{
 		std::cout << glGetString(GL_VERSION) << "\n";
@@ -11,6 +12,7 @@ namespace Core {
 	
 	/* Declare Window Pointer */
 	GLFWwindow* window = nullptr;
+	GLuint VAO;
 
 	/* Setup GLFW and GLEW */
 	bool Setup()
@@ -24,7 +26,7 @@ namespace Core {
 
 		/* Use GLFW Version 4.4 */
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 
 		/* Use the OpenGL Core Profile */
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -66,6 +68,136 @@ namespace Core {
 	void Exit()
 	{
 		glfwTerminate();
+	}
+
+	GLuint CreateTriangle()
+	{
+		/* Vertex Data */
+		GLfloat vertices[] = {
+			-0.5f, -0.5f, 0.0f,
+			0.5f, -0.5f, 0.0f,
+			0.0f, 0.5f, 0.0f
+		};
+
+		/* Vertex Array Object */
+		GLuint VAO;
+		glGenVertexArrays(1, &VAO);
+		glBindVertexArray(VAO);
+
+		/* Vertex Buffer Object */
+		GLuint VBO;
+		glGenBuffers(1, &VBO);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+		/* Format Vertex Data */
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+		glEnableVertexAttribArray(0);
+
+		/* Unbind VBO */
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
+
+		return VAO;
+	}
+
+	GLuint CompileShader(GLenum type, const std::string& source)
+	{
+		/* Create and Compile Shader */
+		GLuint id = glCreateShader(type);
+		const char* src = source.c_str();
+		glShaderSource(id, 1, &src, nullptr);
+		glCompileShader(id);
+
+		// Error Handling
+		int compileStatus;
+		glGetShaderiv(id, GL_COMPILE_STATUS, &compileStatus);
+		if (!compileStatus)
+		{
+			int length;
+			glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length); // length of log
+
+			std::vector<char> message(length);
+			glGetShaderInfoLog(id, length, &length, message.data()); // returns the log
+
+			std::cout << "Failed to compile " << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << " shader\n";
+			std::cout << message.data() << "\n";
+
+			glDeleteShader(id);
+			return 0;
+		}
+
+		return id;
+	}
+
+	GLuint CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
+	{
+		GLuint program = glCreateProgram();
+
+		if (!program)
+		{
+			std::cout << "Failed to create shader program\n";
+			return 0;
+		}
+
+		GLuint vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
+		GLuint fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
+
+		/* Attach Shaders to Program */
+		glAttachShader(program, vs);
+		glAttachShader(program, fs);
+
+		/* Link Program */
+		glLinkProgram(program);
+
+		/* Error Handling */
+		int linkStatus;
+		glGetProgramiv(program, GL_LINK_STATUS, &linkStatus);
+		if (linkStatus == GL_FALSE) 
+		{
+			int length;
+			glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
+
+			std::vector<char> message(length);
+			glGetProgramInfoLog(program, length, &length, message.data());
+
+			std::cout << "Failed to link shader program\n";
+			std::cout << message.data() << "\n";
+
+			glDeleteProgram(program);
+			return 0;
+		}
+
+		/* Validate Program */
+		glValidateProgram(program);
+
+		/* Error Handling */
+		int validateStatus;
+		glGetProgramiv(program, GL_VALIDATE_STATUS, &validateStatus);
+		if (validateStatus == GL_FALSE) 
+		{
+			int length;
+			glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
+
+			std::vector<char> message(length);
+			glGetProgramInfoLog(program, length, &length, message.data());
+
+			std::cout << "Failed to validate shader program\n";
+			std::cout << message.data() << "\n";
+
+			glDeleteProgram(program);
+			return 0;
+		}
+
+		/* Detatch Shaders for Deletions */
+		glDetachShader(program, vs);
+		glDetachShader(program, fs);
+
+		/* Delete Shaders */
+		glDeleteShader(vs);
+		glDeleteShader(fs);
+
+		return program;
 	}
 
 }
