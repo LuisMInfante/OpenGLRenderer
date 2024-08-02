@@ -2,6 +2,9 @@
 
 #include <iostream>
 #include <vector>
+#include <fstream>
+#include <string>
+#include <sstream>
 
 namespace Core 
 {
@@ -198,6 +201,44 @@ namespace Core
 		glDeleteShader(fs);
 
 		return program;
+	}
+
+	Core::ShaderProgramSource ParseShader(const std::string& filepath)
+	{
+		std::ifstream stream(filepath);
+
+		enum class ShaderType
+		{
+			NONE = -1, 
+			VERTEX = 0, 
+			FRAGMENT = 1
+		};
+		
+		ShaderType type = ShaderType::NONE;
+		std::stringstream shaders[2];
+
+		std::string line;
+		while (std::getline(stream, line))
+		{
+			if (line.find("#shader") != std::string::npos)
+			{
+				if (line.find("vertex") != std::string::npos)
+				{
+					type = ShaderType::VERTEX;
+				}
+				else if (line.find("fragment") != std::string::npos)
+				{
+					type = ShaderType::FRAGMENT;
+				}
+			}
+			else
+			{
+				if (type != ShaderType::NONE)
+					shaders[(int)type] << line << '\n';
+			}
+		}
+
+		return { shaders[0].str(), shaders[1].str() };
 	}
 
 }

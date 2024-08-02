@@ -14,30 +14,8 @@ int main()
 
     GLuint VAO = Core::CreateTriangle();
 
-	/* String Literals just for testing, will remove */
-	// Vertex Shader
-	const std::string vertexShader = R"(
-	#version 460 core
-	layout(location = 0) in vec4 pos;
-
-	void main()
-	{
-		gl_Position = pos;
-	}
-	)";
-
-	// Fragment Shader
-	const std::string fragmentShader = R"(
-	#version 460 core
-	out vec4 color;
-
-	void main()
-	{
-		color = vec4(0.0, 0.5, 1.0, 1.0);
-	}
-	)";
-
-	GLuint shader = Core::CreateShader(vertexShader, fragmentShader);
+    Core::ShaderProgramSource source = Core::ParseShader("Assets/Shaders/Basic.glsl");
+	GLuint shader = Core::CreateShader(source.VertexSource, source.FragmentSource);
 	glUseProgram(shader);
 
     while (!glfwWindowShouldClose(Core::window))
@@ -56,5 +34,4 @@ int main()
 	glDeleteProgram(shader);
 
     Core::Exit();
-	
 }

@@ -10,6 +10,7 @@ project "OpenGLRenderer-App"
    includedirs
    {
       "Source",
+      "Assets",
       "../Vendor/GLEW/include",
       "../Vendor/GLFW/include",
 
