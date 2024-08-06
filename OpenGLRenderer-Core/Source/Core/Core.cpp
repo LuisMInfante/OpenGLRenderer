@@ -6,6 +6,7 @@
 #include <string>
 #include <sstream>
 
+
 namespace Core 
 {
 	void PrintOpenGLVersion()
@@ -73,7 +74,7 @@ namespace Core
 		glfwTerminate();
 	}
 
-	GLuint CreateTriangle()
+	VertexArray CreateTriangle()
 	{
 		/* Vertex Data */
 		GLfloat vertices[] = {
@@ -83,27 +84,22 @@ namespace Core
 		};
 
 		/* Vertex Array Object */
-		GLuint VAO;
-		glGenVertexArrays(1, &VAO);
-		glBindVertexArray(VAO);
+		VertexArray VAO;
 
 		/* Vertex Buffer Object */
 		VertexBuffer VBO(vertices, sizeof(vertices));
-		//GLuint VBO;
-		//glGenBuffers(1, &VBO);
-		//glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 		/* Format Vertex Data */
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-		glEnableVertexAttribArray(0);
+		VertexBufferLayout layout;
+		layout.Push<float>(3);
+		VAO.BindBuffer(VBO, layout);
 
 		/* Index Buffer */
 		//IndexBuffer IBO(indices, sizeof(indices) / sizeof(indices[0]));
 
-		/* Unbind VBO */
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindVertexArray(0);
+		/* Unbind */
+		VBO.Unbind();
+		VAO.Unbind();
 
 		return VAO;
 	}
@@ -196,7 +192,7 @@ namespace Core
 			return 0;
 		}
 
-		/* Detatch Shaders for Deletions */
+		/* Detach Shaders for Deletions */
 		glDetachShader(program, vs);
 		glDetachShader(program, fs);
 

@@ -1,11 +1,6 @@
 #include "Core/Core.h"
 
 #include <iostream>
-#include <string.h>
-
-#include "Renderer.h"
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
 
 int main()
 {
@@ -16,7 +11,7 @@ int main()
 
     Core::PrintOpenGLVersion();
 
-    GLuint VAO = Core::CreateTriangle();
+    VertexArray VAO = Core::CreateTriangle();
 
     Core::ShaderProgramSource source = Core::ParseShader("Assets/Shaders/Basic.glsl");
 	GLuint shader = Core::CreateShader(source.VertexSource, source.FragmentSource);
@@ -29,7 +24,7 @@ int main()
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-		glBindVertexArray(VAO);
+        VAO.Bind();
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
         glfwSwapBuffers(Core::window);

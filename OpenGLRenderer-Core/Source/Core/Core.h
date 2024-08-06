@@ -4,10 +4,12 @@
 #include "GLFW/glfw3.h"
 
 #include <string>
-
-#include "Renderer.h"
+#include "VertexArray.h"
 #include "VertexBuffer.h"
+#include "VertexBufferLayout.h"
 #include "IndexBuffer.h"
+
+class VertexArray;
 
 namespace Core 
 {
@@ -20,7 +22,7 @@ namespace Core
 	bool Setup();
 	void Exit();
 
-	GLuint CreateTriangle();
+	VertexArray CreateTriangle();
 	GLuint CompileShader(GLenum type, const std::string& source);
 	GLuint CreateShader(const std::string& vertexShader, const std::string& fragmentShader);
 	Core::ShaderProgramSource ParseShader(const std::string& filepath);
