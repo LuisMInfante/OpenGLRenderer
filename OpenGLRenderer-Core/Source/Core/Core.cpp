@@ -88,14 +88,18 @@ namespace Core
 		glBindVertexArray(VAO);
 
 		/* Vertex Buffer Object */
-		GLuint VBO;
-		glGenBuffers(1, &VBO);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		VertexBuffer VBO(vertices, sizeof(vertices));
+		//GLuint VBO;
+		//glGenBuffers(1, &VBO);
+		//glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 		/* Format Vertex Data */
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 		glEnableVertexAttribArray(0);
+
+		/* Index Buffer */
+		//IndexBuffer IBO(indices, sizeof(indices) / sizeof(indices[0]));
 
 		/* Unbind VBO */
 		glBindBuffer(GL_ARRAY_BUFFER, 0);

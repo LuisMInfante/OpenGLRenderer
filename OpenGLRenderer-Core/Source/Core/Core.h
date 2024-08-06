@@ -5,6 +5,10 @@
 
 #include <string>
 
+#include "Renderer.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
+
 namespace Core 
 {
 	typedef struct ShaderProgramSource ShaderProgramSource;

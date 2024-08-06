@@ -3,6 +3,10 @@
 #include <iostream>
 #include <string.h>
 
+#include "Renderer.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
+
 int main()
 {
     if (!Core::Setup())
