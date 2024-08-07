@@ -1,7 +1,19 @@
 #pragma once
 
 #include <vector>
-#include <GL/glew.h>
+
+typedef unsigned int GLenum;
+typedef int GLint;
+typedef unsigned char GLboolean;
+typedef float GLfloat;
+typedef unsigned int GLuint;
+typedef unsigned char GLubyte;
+typedef int GLsizei;
+
+#define GL_UNSIGNED_BYTE 0x1401
+#define GL_INT 0x1404
+#define GL_UNSIGNED_INT 0x1405
+#define GL_FLOAT 0x1406
 
 struct VertexBufferElement
 {

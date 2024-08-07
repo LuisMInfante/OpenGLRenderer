@@ -1,6 +1,13 @@
 #include "Core/Core.h"
 
-#include <iostream>
+#include "GL/glew.h"
+#include "GLFW/glfw3.h"
+#include "VertexArray.h"
+#include "VertexBuffer.h"
+#include "VertexBufferLayout.h"
+#include "IndexBuffer.h"
+#include "Shader.h"
+//#include "Renderer.h"
 
 int main()
 {
@@ -8,14 +15,17 @@ int main()
     {
         return -1;
     }
+    
+    glfwSwapInterval(1);
 
     Core::PrintOpenGLVersion();
 
     VertexArray VAO = Core::CreateTriangle();
 
-    Core::ShaderProgramSource source = Core::ParseShader("Assets/Shaders/Basic.glsl");
-	GLuint shader = Core::CreateShader(source.VertexSource, source.FragmentSource);
-	glUseProgram(shader);
+    Shader shader("Assets/Shaders/Basic.glsl");
+    shader.UseProgram();
+    shader.SetUniform4f("u_Color", 0.0f, 0.5f, 1.0f, 1.0f);
+    //shader.UnuseProgram();
 
     while (!glfwWindowShouldClose(Core::window))
     {
@@ -30,7 +40,7 @@ int main()
         glfwSwapBuffers(Core::window);
     }
 
-	glDeleteProgram(shader);
+    shader.DeleteProgram();
 
     Core::Exit();
 }
