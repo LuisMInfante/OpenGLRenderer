@@ -11,7 +11,8 @@ project "OpenGLRenderer-Core"
    {
       "Source",
       "../Vendor/GLEW/include",
-      "../Vendor/GLFW/include"
+      "../Vendor/GLFW/include",
+      "../Vendor/GLM"
    }
    
    libdirs

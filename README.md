@@ -11,6 +11,7 @@ This is a simple OpenGL Renderer project utilizing the Core/App project architec
 - Premake binaries for Win/Mac/Linux (`v5.0-beta2`)
 - GLEW (OpenGL Extension Wrangler Library, `v2.1.0`)
 - GLFW (OpenGL Framework Library, `v3.4`)
+- GLM  (OpenGL Mathematics, `v1.0.1`)
 
 ## License
 - UNLICENSE for this repository (see `UNLICENSE.txt` for more details)
