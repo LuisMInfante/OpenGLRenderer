@@ -22,7 +22,6 @@ project "OpenGLRenderer-Core"
 
    links
    {
-      "OpenGLRenderer-Core",
       "opengl32",
       "glew32s",
       "glfw3"

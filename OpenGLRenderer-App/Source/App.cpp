@@ -6,8 +6,8 @@
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
 #include "IndexBuffer.h"
+#include "Renderer.h"
 #include "Shader.h"
-//#include "Renderer.h"
 
 int main()
 {
@@ -27,15 +27,14 @@ int main()
     shader.SetUniform4f("u_Color", 0.0f, 0.5f, 1.0f, 1.0f);
     //shader.UnuseProgram();
 
+    Renderer renderer;
+
     while (!glfwWindowShouldClose(Core::window))
     {
         glfwPollEvents();
 
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        VAO.Bind();
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+        renderer.Clear();
+        renderer.Draw(VAO, shader);
 
         glfwSwapBuffers(Core::window);
     }

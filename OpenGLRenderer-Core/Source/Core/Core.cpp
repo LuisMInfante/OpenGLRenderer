@@ -13,7 +13,6 @@
 #include "VertexBufferLayout.h"
 #include "IndexBuffer.h"
 #include "Shader.h"
-#include "Renderer.h"
 
 namespace Core 
 {

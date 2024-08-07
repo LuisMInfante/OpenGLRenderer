@@ -1,6 +1,6 @@
 #pragma once
 
-class GLFWwindow;
+typedef struct GLFWwindow GLFWwindow;
 class VertexArray;
 
 namespace Core 
