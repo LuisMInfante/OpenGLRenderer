@@ -1,10 +1,7 @@
 #include "Core.h"
 
 #include <iostream>
-#include <vector>
 #include <fstream>
-#include <string>
-#include <sstream>
 
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
@@ -16,6 +13,7 @@
 
 namespace Core 
 {
+
 	void PrintOpenGLVersion()
 	{
 		std::cout << glGetString(GL_VERSION) << "\n";
@@ -81,17 +79,29 @@ namespace Core
 		glfwTerminate();
 	}
 
-	VertexArray CreateTriangle()
+	Buffers CreateTriangle()
 	{
 		/* Vertex Data */
 		GLfloat vertices[] = {
-			-0.5f, -0.5f, 0.0f,
-			0.5f, -0.5f, 0.0f,
-			0.0f, 0.5f, 0.0f
+			-1.0f, -1.0f, 0.0f,
+			0.0f, -1.0f, 1.0f,
+			1.0f, -1.0f, 0.0f,
+			0.0f, 1.0f, 0.0f
+		};
+
+		/* Index Data */
+		GLuint indices[] = {
+			0, 3, 1,
+			1, 3, 2,
+			2, 3, 0,
+			0, 1, 2
 		};
 
 		/* Vertex Array Object */
 		VertexArray VAO;
+
+		/* Index Buffer Object */
+		IndexBuffer IBO(indices, std::size(indices));
 
 		/* Vertex Buffer Object */
 		VertexBuffer VBO(vertices, sizeof(vertices));
@@ -101,13 +111,11 @@ namespace Core
 		layout.Push<float>(3);
 		VAO.BindBuffer(VBO, layout);
 
-		/* Index Buffer */
-		//IndexBuffer IBO(indices, sizeof(indices) / sizeof(indices[0]));
-
 		/* Unbind */
 		VBO.Unbind();
 		VAO.Unbind();
+		IBO.Unbind();
 
-		return VAO;
+		return { VAO, VBO, IBO };
 	}
 }

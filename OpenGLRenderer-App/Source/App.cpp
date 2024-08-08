@@ -2,6 +2,10 @@
 
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
+
 #include "VertexArray.h"
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
@@ -20,21 +24,126 @@ int main()
 
     Core::PrintOpenGLVersion();
 
-    VertexArray VAO = Core::CreateTriangle();
+    //auto [VAO, VBO, IBO] = Core::CreateTriangle();
+
+    /* Vertex Data */
+    GLfloat vertices[] = {
+        -1.0f, -1.0f, 1.0f,
+        1.0f, -1.0f, 1.0f,
+        1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f, -1.0f,
+        0.0f, 1.0f, 0.0f
+    };
+
+    /* Index Data */
+    GLuint indices[] = {
+        0, 1, 4,
+        1, 2, 4,
+        2, 3, 4,
+        3, 0, 4,
+        0, 1, 2,
+        2, 3, 0
+    };
+
+    /* Vertex Array Object */
+    VertexArray VAO;
+
+    /* Index Buffer Object */
+    IndexBuffer IBO(indices, std::size(indices));
+
+    /* Vertex Buffer Object */
+    VertexBuffer VBO(vertices, sizeof(vertices));
+
+    /* Format Vertex Data */
+    VertexBufferLayout layout;
+    layout.Push<float>(3);
+    VAO.BindBuffer(VBO, layout);
+
+    /* Unbind */
+    VBO.Unbind();
+    VAO.Unbind();
+    IBO.Unbind();
 
     Shader shader("Assets/Shaders/Basic.glsl");
     shader.UseProgram();
-    shader.SetUniform4f("u_Color", 0.0f, 0.5f, 1.0f, 1.0f);
+    //shader.SetUniform4f("u_Color", 0.0f, 0.5f, 1.0f, 1.0f);
+
     //shader.UnuseProgram();
 
     Renderer renderer;
+
+    /* Testing Movement */
+    bool direction = true;
+    float offset = 0.0f;
+    float increment = 0.005f;
+    float maxOffset = 0.5f;
+
+    float angle = 0.0f;
+
+    bool growth = true;
+    float size = 1.0f;
+    float maxSize = 2.0f;
+    float minSize = 0.1f;
+
+    glEnable(GL_DEPTH_TEST);
+
+    const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+    GLfloat aspectRatio = (GLfloat)mode->width / (GLfloat)mode->height;
+    glm::mat4 projection(glm::perspective(45.0f, aspectRatio, 0.1f, 100.0f));
 
     while (!glfwWindowShouldClose(Core::window))
     {
         glfwPollEvents();
 
-        renderer.Clear();
-        renderer.Draw(VAO, shader);
+        // translate
+        if (direction)
+		{
+			offset += increment;
+		}
+		else
+		{
+			offset -= increment;
+		}
+
+        // Reverse direction
+        if (offset >= maxOffset || offset <= -maxOffset)
+        {
+        	direction = !direction;
+        }
+
+        // Rotate
+        angle += 0.25f;
+		if (angle > 360.0f)
+		{
+			angle = 0.0f;
+		}
+
+        // Scale
+        if (growth)
+        {
+	        size += 0.01f;
+		}
+		else
+		{
+			size -= 0.01f;
+        }
+
+        if (size >= maxSize || size <= minSize)
+		{
+			growth = !growth;
+		}
+
+        Renderer::Clear();
+
+        glm::mat4 model(1.0f);
+        model = glm::translate(model, glm::vec3(0.0f, 0.0f, -2.5f));
+        model = glm::rotate(model, glm::radians((float)angle), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.5f, 0.5f, 1.0f));
+
+        shader.SetUniformMatrix4f("u_Model", model);
+        shader.SetUniformMatrix4f("u_Projection", projection);
+
+        Renderer::Draw(VAO, IBO, shader);
 
         glfwSwapBuffers(Core::window);
     }

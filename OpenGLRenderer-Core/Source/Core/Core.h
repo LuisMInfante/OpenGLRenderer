@@ -1,7 +1,17 @@
 #pragma once
+#include "IndexBuffer.h"
+#include "VertexArray.h"
+#include "VertexBuffer.h"
 
 typedef struct GLFWwindow GLFWwindow;
-class VertexArray;
+typedef struct Buffers Buffers;
+
+struct Buffers
+{
+	VertexArray VAO;
+	VertexBuffer VBO;
+	IndexBuffer IBO;
+};
 
 namespace Core 
 {
@@ -12,5 +22,5 @@ namespace Core
 	bool Setup();
 	void Exit();
 
-	VertexArray CreateTriangle();
+	Buffers CreateTriangle();
 }
