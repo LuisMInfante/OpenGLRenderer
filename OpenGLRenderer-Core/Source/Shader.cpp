@@ -6,8 +6,6 @@
 #include <string>
 #include <sstream>
 #include <GL/glew.h>
-#include "GL/glew.h"
-
 
 Shader::Shader(const std::string& filepath)
 	: m_FilePath(filepath), m_RendererID(0)

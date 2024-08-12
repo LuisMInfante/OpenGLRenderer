@@ -6,21 +6,20 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
-#include "IndexBuffer.h"
 #include "Renderer.h"
 #include "Shader.h"
 #include "Mesh.h"
+#include "Display.h"
 
 int main()
 {
-    if (!Core::Setup())
+    Display mainWindow(800, 600);
+    if (!mainWindow.Init())
     {
         return -1;
     }
-
-    glfwSwapInterval(1);
-
-    Core::PrintOpenGLVersion();
+    Display::EnableSync();
+    Display::PrintOpenGLVersion();
 
     Renderer renderer;
 
@@ -46,72 +45,27 @@ int main()
     /* Mesh */
     Mesh mesh(vertices, std::size(vertices), indices, std::size(indices));
 
+    /* Shader */
     Shader shader("Assets/Shaders/Basic.glsl");
     shader.UseProgram();
-    //shader.SetUniform4f("u_Color", 0.0f, 0.5f, 1.0f, 1.0f);
-
-    //shader.UnuseProgram();
-
 
     /* Testing Movement */
-    bool direction = true;
-    float offset = 0.0f;
-    float increment = 0.005f;
-    float maxOffset = 0.5f;
-
     float angle = 0.0f;
-
-    bool growth = true;
-    float size = 1.0f;
-    float maxSize = 2.0f;
-    float minSize = 0.1f;
 
     glEnable(GL_DEPTH_TEST);
 
-    const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-    GLfloat aspectRatio = (GLfloat)mode->width / (GLfloat)mode->height;
+    GLfloat aspectRatio = mainWindow.GetFrameBufferWidth() / mainWindow.GetFrameBufferHeight();
     glm::mat4 projection(glm::perspective(45.0f, aspectRatio, 0.1f, 100.0f));
 
-    while (!glfwWindowShouldClose(Core::window))
+    while (!mainWindow.IsClosed())
     {
-        glfwPollEvents();
-
-        // translate
-        if (direction)
-		{
-			offset += increment;
-		}
-		else
-		{
-			offset -= increment;
-		}
-
-        // Reverse direction
-        if (offset >= maxOffset || offset <= -maxOffset)
-        {
-        	direction = !direction;
-        }
+        Display::Update();
 
         // Rotate
         angle += 0.25f;
 		if (angle > 360.0f)
 		{
 			angle = 0.0f;
-		}
-
-        // Scale
-        if (growth)
-        {
-	        size += 0.01f;
-		}
-		else
-		{
-			size -= 0.01f;
-        }
-
-        if (size >= maxSize || size <= minSize)
-		{
-			growth = !growth;
 		}
 
         Renderer::Clear();
@@ -126,10 +80,6 @@ int main()
 
         Renderer::Draw(mesh, shader);
 
-        glfwSwapBuffers(Core::window);
+        mainWindow.SwapBuffers();
     }
-
-    shader.DeleteProgram();
-
-    Core::Exit();
 }

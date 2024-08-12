@@ -1,9 +1,6 @@
 #include "Mesh.h"
 
-#include "GL/glew.h"
-#include "Renderer.h"
 #include "VertexBufferLayout.h"
-#include "Shader.h"
 
 Mesh::Mesh()
 	: m_VertexArray(), m_VertexBuffer(nullptr, 0), m_IndexBuffer(nullptr, 0)
