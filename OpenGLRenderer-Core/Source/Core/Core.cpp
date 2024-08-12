@@ -21,7 +21,6 @@ namespace Core
 	
 	/* Declare Window Pointer */
 	GLFWwindow* window = nullptr;
-	GLuint VAO;
 
 	/* Setup GLFW and GLEW */
 	bool Setup()
@@ -77,45 +76,5 @@ namespace Core
 	void Exit()
 	{
 		glfwTerminate();
-	}
-
-	Buffers CreateTriangle()
-	{
-		/* Vertex Data */
-		GLfloat vertices[] = {
-			-1.0f, -1.0f, 0.0f,
-			0.0f, -1.0f, 1.0f,
-			1.0f, -1.0f, 0.0f,
-			0.0f, 1.0f, 0.0f
-		};
-
-		/* Index Data */
-		GLuint indices[] = {
-			0, 3, 1,
-			1, 3, 2,
-			2, 3, 0,
-			0, 1, 2
-		};
-
-		/* Vertex Array Object */
-		VertexArray VAO;
-
-		/* Index Buffer Object */
-		IndexBuffer IBO(indices, std::size(indices));
-
-		/* Vertex Buffer Object */
-		VertexBuffer VBO(vertices, sizeof(vertices));
-
-		/* Format Vertex Data */
-		VertexBufferLayout layout;
-		layout.Push<float>(3);
-		VAO.BindBuffer(VBO, layout);
-
-		/* Unbind */
-		VBO.Unbind();
-		VAO.Unbind();
-		IBO.Unbind();
-
-		return { VAO, VBO, IBO };
 	}
 }

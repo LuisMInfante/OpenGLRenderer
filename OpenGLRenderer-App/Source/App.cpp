@@ -6,12 +6,10 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
-#include "VertexArray.h"
-#include "VertexBuffer.h"
-#include "VertexBufferLayout.h"
 #include "IndexBuffer.h"
 #include "Renderer.h"
 #include "Shader.h"
+#include "Mesh.h"
 
 int main()
 {
@@ -19,12 +17,12 @@ int main()
     {
         return -1;
     }
-    
+
     glfwSwapInterval(1);
 
     Core::PrintOpenGLVersion();
 
-    //auto [VAO, VBO, IBO] = Core::CreateTriangle();
+    Renderer renderer;
 
     /* Vertex Data */
     GLfloat vertices[] = {
@@ -45,24 +43,8 @@ int main()
         2, 3, 0
     };
 
-    /* Vertex Array Object */
-    VertexArray VAO;
-
-    /* Index Buffer Object */
-    IndexBuffer IBO(indices, std::size(indices));
-
-    /* Vertex Buffer Object */
-    VertexBuffer VBO(vertices, sizeof(vertices));
-
-    /* Format Vertex Data */
-    VertexBufferLayout layout;
-    layout.Push<float>(3);
-    VAO.BindBuffer(VBO, layout);
-
-    /* Unbind */
-    VBO.Unbind();
-    VAO.Unbind();
-    IBO.Unbind();
+    /* Mesh */
+    Mesh mesh(vertices, std::size(vertices), indices, std::size(indices));
 
     Shader shader("Assets/Shaders/Basic.glsl");
     shader.UseProgram();
@@ -70,7 +52,6 @@ int main()
 
     //shader.UnuseProgram();
 
-    Renderer renderer;
 
     /* Testing Movement */
     bool direction = true;
@@ -143,7 +124,7 @@ int main()
         shader.SetUniformMatrix4f("u_Model", model);
         shader.SetUniformMatrix4f("u_Projection", projection);
 
-        Renderer::Draw(VAO, IBO, shader);
+        Renderer::Draw(mesh, shader);
 
         glfwSwapBuffers(Core::window);
     }

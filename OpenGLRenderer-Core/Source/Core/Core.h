@@ -4,14 +4,6 @@
 #include "VertexBuffer.h"
 
 typedef struct GLFWwindow GLFWwindow;
-typedef struct Buffers Buffers;
-
-struct Buffers
-{
-	VertexArray VAO;
-	VertexBuffer VBO;
-	IndexBuffer IBO;
-};
 
 namespace Core 
 {
@@ -21,6 +13,4 @@ namespace Core
 
 	bool Setup();
 	void Exit();
-
-	Buffers CreateTriangle();
 }

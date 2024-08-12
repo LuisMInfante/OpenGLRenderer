@@ -1,5 +1,7 @@
 #pragma once
 
+typedef unsigned int GLuint;
+
 class IndexBuffer
 {
 public:
@@ -10,6 +12,8 @@ public:
 	void Unbind() const;
 
 	inline unsigned int GetCount() const { return m_Count; }
+
+	GLuint GetRendererID() const { return m_RendererID; }
 
 private:
 		unsigned int m_RendererID;
