@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 #include "GLFW/glfw3.h"
+#include <glm/vec2.hpp>
 
 #include <iostream>
 
@@ -28,8 +29,22 @@ public:
 	GLfloat GetFrameBufferWidth() const { return (GLfloat)m_FrameBufferWidth; }
 	GLfloat GetFrameBufferHeight() const { return (GLfloat)m_FrameBufferHeight; }
 
+	bool* GetKeyCodes() { return m_KeyCodes; }
+	glm::vec2 GetMouseDelta();
+
+private:
+
+	/* Callbacks */
+	void InitCallbacks();
+	static void HandleInput(GLFWwindow* window, int key, int code, int action, int mode);
+	static void HandleMouse(GLFWwindow* window, double xPos, double yPos);
 private:
 	GLFWwindow* m_Window;
 	GLint m_WindowWidth, m_WindowHeight;
 	GLint m_FrameBufferWidth, m_FrameBufferHeight;
+
+	/* Input Handling (May Create a separate class for input in the future */
+	bool m_KeyCodes[1024];
+	glm::vec2 m_LastMousePosition = { 0.0f, 0.0f};
+	bool m_Moved = false;
 };

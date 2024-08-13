@@ -52,8 +52,6 @@ int main()
     /* Testing Movement */
     float angle = 0.0f;
 
-    glEnable(GL_DEPTH_TEST);
-
     GLfloat aspectRatio = mainWindow.GetFrameBufferWidth() / mainWindow.GetFrameBufferHeight();
     glm::mat4 projection(glm::perspective(45.0f, aspectRatio, 0.1f, 100.0f));
 
