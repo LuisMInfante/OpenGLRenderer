@@ -30,7 +30,8 @@ project "OpenGLRenderer-Core"
 
    defines 
    {
-       "GLEW_STATIC"
+       "GLEW_STATIC",
+       "GLM_ENABLE_EXPERIMENTAL"
    }
 
    targetdir ("../Binaries/" .. OutputDir .. "/%{prj.name}")

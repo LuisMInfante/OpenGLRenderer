@@ -72,18 +72,25 @@ bool Display::Init()
 	/* Initialize Callbacks */
 	InitCallbacks();
 
-	//glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	/* Lock the cursor to the window */
+	glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	return true;
 }
 
-glm::vec2 Display::GetMouseDelta()
+glm::vec2 Display::GetMousePosition()
 {
 	double xPos, yPos;
 	glfwGetCursorPos(m_Window, &xPos, &yPos);
 
-	std::cout << "Delta: " << (float)xPos - m_LastMousePosition.x << ", " << m_LastMousePosition.y - (float)yPos << "\n";
-	return { (float)xPos - m_LastMousePosition.x, m_LastMousePosition.y - (float)yPos };
+	return { (float)xPos, (float)yPos };
+}
+
+glm::vec2 Display::GetMouseDelta()
+{
+	glm::vec2 delta = m_MouseDelta;
+	m_MouseDelta = glm::vec2(0.0f);
+	return delta;
 }
 
 void Display::InitCallbacks()
@@ -98,7 +105,7 @@ void Display::HandleInput(GLFWwindow* window, int key, int code, int action, int
 
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 	{
-		//glfwSetInputMode(display->m_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		glfwSetWindowShouldClose(window, GL_TRUE);
 	}
 
 	if (key >= 0 && key < 1024)
@@ -112,14 +119,18 @@ void Display::HandleInput(GLFWwindow* window, int key, int code, int action, int
 			display->m_KeyCodes[key] = false;
 		}
 	}
-
 }
 
 void Display::HandleMouse(GLFWwindow* window, double xPos, double yPos)
 {
 	Display* display = static_cast<Display*>(glfwGetWindowUserPointer(window));
 
-	//display->GetMouseDelta();
-	display->m_LastMousePosition.x = (float)xPos;
-	display->m_LastMousePosition.y = (float)yPos;
+	if (display->m_FirstMouse)
+	{
+		display->m_LastMousePosition = glm::vec2((GLfloat)xPos, (GLfloat)yPos);
+		display->m_FirstMouse = false;
+	}
+
+	display->m_MouseDelta = { (GLfloat)xPos - display->m_LastMousePosition.x, display->m_LastMousePosition.y - (GLfloat)yPos };
+	display->m_LastMousePosition = { (float)xPos, (float)yPos };
 }

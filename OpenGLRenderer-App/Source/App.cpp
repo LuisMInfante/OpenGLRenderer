@@ -10,6 +10,7 @@
 #include "Shader.h"
 #include "Mesh.h"
 #include "Display.h"
+#include "Camera.h"
 
 int main()
 {
@@ -54,10 +55,20 @@ int main()
 
     GLfloat aspectRatio = mainWindow.GetFrameBufferWidth() / mainWindow.GetFrameBufferHeight();
     glm::mat4 projection(glm::perspective(45.0f, aspectRatio, 0.1f, 100.0f));
+    Camera camera(45.0f, 0.1f, 100.0f, aspectRatio);
 
+    GLfloat deltaTime = 0.0f;
+    GLfloat lastFrameTime = 0.0f;
     while (!mainWindow.IsClosed())
     {
+        GLfloat currentFrameTime = (GLfloat)glfwGetTime();
+        deltaTime = currentFrameTime - lastFrameTime;
+        lastFrameTime = currentFrameTime;
+
         Display::Update();
+
+        camera.ProcessInput(mainWindow.GetKeyCodes(), deltaTime);
+        camera.ProcessMouseInput(mainWindow.GetMouseDelta());
 
         // Rotate
         angle += 0.25f;
@@ -74,7 +85,8 @@ int main()
         model = glm::scale(model, glm::vec3(0.5f, 0.5f, 1.0f));
 
         shader.SetUniformMatrix4f("u_Model", model);
-        shader.SetUniformMatrix4f("u_Projection", projection);
+        shader.SetUniformMatrix4f("u_Projection", camera.GetProjection());
+        shader.SetUniformMatrix4f("u_View", camera.GetView());
 
         Renderer::Draw(mesh, shader);
 

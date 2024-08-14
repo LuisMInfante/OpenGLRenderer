@@ -16,7 +16,7 @@ public:
 	Display(GLint WindowWidth, GLint WindowHeight);
 	~Display();
 
-	static void PrintOpenGLVersion() { std::cout << glGetString(GL_VERSION) << "\n"; };
+	static void PrintOpenGLVersion() { std::cout << glGetString(GL_VERSION) << "\n"; }
 
 	bool Init();
 	bool IsClosed() const { return glfwWindowShouldClose(m_Window); }
@@ -28,8 +28,10 @@ public:
 	GLint GetWindowHeight() const { return m_WindowHeight; }
 	GLfloat GetFrameBufferWidth() const { return (GLfloat)m_FrameBufferWidth; }
 	GLfloat GetFrameBufferHeight() const { return (GLfloat)m_FrameBufferHeight; }
+	GLFWwindow* GetWindow() const { return m_Window; }
 
 	bool* GetKeyCodes() { return m_KeyCodes; }
+	glm::vec2 GetMousePosition();
 	glm::vec2 GetMouseDelta();
 
 private:
@@ -38,6 +40,7 @@ private:
 	void InitCallbacks();
 	static void HandleInput(GLFWwindow* window, int key, int code, int action, int mode);
 	static void HandleMouse(GLFWwindow* window, double xPos, double yPos);
+
 private:
 	GLFWwindow* m_Window;
 	GLint m_WindowWidth, m_WindowHeight;
@@ -46,5 +49,7 @@ private:
 	/* Input Handling (May Create a separate class for input in the future */
 	bool m_KeyCodes[1024];
 	glm::vec2 m_LastMousePosition = { 0.0f, 0.0f};
+	glm::vec2 m_MouseDelta = { 0.0f, 0.0f };
 	bool m_Moved = false;
+	bool m_FirstMouse = true;
 };
