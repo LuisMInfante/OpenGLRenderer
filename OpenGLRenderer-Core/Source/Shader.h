@@ -23,9 +23,12 @@ public:
 	void UnuseProgram() const;
 	void DeleteProgram() const;
 
+	void SetUniform1i(const std::string& name, int value);
 	void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
 	void SetUniformMatrix4f(const std::string& name, const glm::mat4& matrix);
+
 	unsigned int GetID() const { return m_RendererID; }
+
 private:
 	ShaderProgramSource ParseShader(const std::string& filepath);
 	GLuint CompileShader(GLenum type, const std::string& source);

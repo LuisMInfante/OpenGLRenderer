@@ -14,6 +14,7 @@ project "OpenGLRenderer-App"
       "../Vendor/GLEW/include",
       "../Vendor/GLFW/include",
       "../Vendor/GLM",
+      "../Vendor/STB",
 
 	  -- Include Core
 	  "../OpenGLRenderer-Core/Source"

@@ -13,9 +13,10 @@ Mesh::Mesh(const GLfloat* vertices, const unsigned int numVertices, const GLuint
     : m_VertexArray(), m_VertexBuffer(vertices, sizeof(GLfloat) * numVertices), m_IndexBuffer(indices, numIndices)
 {
     VertexBufferLayout layout;
-    layout.Push<float>(3);
-    m_VertexArray.BindBuffer(m_VertexBuffer, layout);
+    layout.Push<float>(3); // Position (x,y,z)
+    layout.Push<float>(2); // Texture Coordinates (u,v)
 
+    m_VertexArray.BindBuffer(m_VertexBuffer, layout);
     Unbind();
 }
 
@@ -37,7 +38,9 @@ void Mesh::CreateMesh(const GLfloat* vertices, const unsigned int numVertices, c
 
     /* Format Vertex Data */
     VertexBufferLayout layout;
-    layout.Push<float>(3);
+    layout.Push<float>(3); // Position (x,y,z)
+    layout.Push<float>(2); // Texture Coordinates (u,v)
+
     m_VertexArray.BindBuffer(m_VertexBuffer, layout);
 
     /* Unbind */

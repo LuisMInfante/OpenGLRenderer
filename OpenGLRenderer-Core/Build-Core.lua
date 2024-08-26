@@ -12,7 +12,8 @@ project "OpenGLRenderer-Core"
       "Source",
       "../Vendor/GLEW/include",
       "../Vendor/GLFW/include",
-      "../Vendor/GLM"
+      "../Vendor/GLM",
+      "../Vendor/STB"
    }
    
    libdirs
@@ -31,7 +32,8 @@ project "OpenGLRenderer-Core"
    defines 
    {
        "GLEW_STATIC",
-       "GLM_ENABLE_EXPERIMENTAL"
+       "GLM_ENABLE_EXPERIMENTAL",
+       "STB_IMAGE_IMPLEMENTATION"
    }
 
    targetdir ("../Binaries/" .. OutputDir .. "/%{prj.name}")

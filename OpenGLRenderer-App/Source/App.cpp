@@ -11,6 +11,7 @@
 #include "Mesh.h"
 #include "Display.h"
 #include "Camera.h"
+#include "Texture.h"
 
 int main()
 {
@@ -26,11 +27,12 @@ int main()
 
     /* Vertex Data */
     GLfloat vertices[] = {
-        -1.0f, -1.0f, 1.0f,
-        1.0f, -1.0f, 1.0f,
-        1.0f, -1.0f, -1.0f,
-        -1.0f, -1.0f, -1.0f,
-        0.0f, 1.0f, 0.0f
+        // Position              // Texture Coordinates
+        -1.0f, -1.0f,  1.0f,     0.0f, 0.0f, // Bottom-left
+         1.0f, -1.0f,  1.0f,     1.0f, 0.0f, // Bottom-right
+         1.0f, -1.0f, -1.0f,     1.0f, 1.0f, // Top-right
+        -1.0f, -1.0f, -1.0f,     0.0f, 1.0f, // Top-left
+         0.0f,  1.0f,  0.0f,     0.5f, 0.5f  // Apex
     };
 
     /* Index Data */
@@ -47,8 +49,13 @@ int main()
     Mesh mesh(vertices, std::size(vertices), indices, std::size(indices));
 
     /* Shader */
-    Shader shader("Assets/Shaders/Basic.glsl");
+    Shader shader("Assets/Shaders/BasicWithTexture.glsl");
     shader.UseProgram();
+
+    /* Texture */
+    Texture texture("Assets/Textures/Brick.png");
+    texture.Bind(0);
+    shader.SetUniform1i("u_Texture", 0);
 
     /* Testing Movement */
     float angle = 0.0f;
