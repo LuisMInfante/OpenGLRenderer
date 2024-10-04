@@ -12,6 +12,7 @@
 #include "Display.h"
 #include "Camera.h"
 #include "Texture.h"
+#include "Light.h"
 
 int main()
 {
@@ -49,13 +50,16 @@ int main()
     Mesh mesh(vertices, std::size(vertices), indices, std::size(indices));
 
     /* Shader */
-    Shader shader("Assets/Shaders/BasicWithTexture.glsl");
+    Shader shader("Assets/Shaders/BasicTextAndLight.glsl");
     shader.UseProgram();
 
     /* Texture */
     Texture texture("Assets/Textures/Brick.png");
     texture.Bind(0);
     shader.SetUniform1i("u_Texture", 0);
+
+    /* Light */
+    Light light(glm::vec3(1.0f, 1.0f, 1.0f), 0.2f);
 
     /* Testing Movement */
     float angle = 0.0f;
@@ -94,6 +98,10 @@ int main()
         shader.SetUniformMatrix4f("u_Model", model);
         shader.SetUniformMatrix4f("u_Projection", camera.GetProjection());
         shader.SetUniformMatrix4f("u_View", camera.GetView());
+        //shader.SetUniform3f("u_Light.position", light.GetPosition());
+        shader.SetUniform3f("u_Light.color", light.GetColor());
+        shader.SetUniform1f("u_Light.intensity", light.GetIntensity());
+        //light.ActivateLight(shader);
 
         Renderer::Draw(mesh, shader);
 
