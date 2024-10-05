@@ -33,7 +33,8 @@ out vec4 color;
 struct Light
 {
 	vec3 position;
-	vec3 color;
+	vec3 ambientColor;
+	vec3 diffuseColor;
 	vec3 direction;
 	float ambientIntensity;
 	float diffuseIntensity;
@@ -45,9 +46,9 @@ uniform Light u_Light;
 
 void main()
 {
-	vec4 ambientColor = vec4(u_Light.color, 1.0) * u_Light.ambientIntensity;
+	vec4 ambientColor = vec4(u_Light.ambientColor, 1.0) * u_Light.ambientIntensity;
 	float diffuseFactor = max(dot(normalize(v_Normal), normalize(u_Light.direction)), 0.0f);
-	vec4 diffuseColor = vec4(u_Light.color, 1.0) * u_Light.diffuseIntensity * diffuseFactor;
+	vec4 diffuseColor = vec4(u_Light.diffuseColor, 1.0) * u_Light.diffuseIntensity * diffuseFactor;
 	vec4 texColor = texture(u_Texture, v_TexCoord);
 	color = texColor * (ambientColor + diffuseColor);
 };

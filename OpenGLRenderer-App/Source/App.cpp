@@ -63,7 +63,8 @@ int main()
     shader.SetUniform1i("u_Texture", 0);
 
     /* Light */
-    Light light(glm::vec3(1.0f, 1.0f, 1.0f), 0.2f, glm::vec3(2.0f, 2.0f, -4.0f), 1.0f);
+    Light light(glm::vec3(1.0f, 1.0f, 1.0f), 0.1f);
+    Light directionalLight(glm::vec3(1.0f, 1.0f, 1.0f), 1.0f, glm::vec3(2.0f, 1.0f, -4.0f));
 
     /* Testing Movement */
     float angle = 0.0f;
@@ -104,12 +105,13 @@ int main()
         shader.SetUniformMatrix4f("u_View", camera.GetView());
 
         /* Ambient Light */
-        shader.SetUniform3f("u_Light.color", light.GetColor());
+        shader.SetUniform3f("u_Light.ambientColor", light.GetAmbientColor());
         shader.SetUniform1f("u_Light.ambientIntensity", light.GetAmbientIntensity());
 
         /* Directional Light */
-        shader.SetUniform3f("u_Light.direction", light.GetDirection());
-        shader.SetUniform1f("u_Light.diffuseIntensity", light.GetDiffuseIntensity());
+        shader.SetUniform3f("u_Light.direction", directionalLight.GetDirection());
+        shader.SetUniform3f("u_Light.diffuseColor", directionalLight.GetDiffuseColor());
+        shader.SetUniform1f("u_Light.diffuseIntensity", directionalLight.GetDiffuseIntensity());
 
         Renderer::Draw(mesh, shader);
 
