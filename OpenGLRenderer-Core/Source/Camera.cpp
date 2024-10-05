@@ -94,15 +94,7 @@ void Camera::ProcessMouseInput(glm::vec2 delta)
 	m_Pitch += delta.y;
 
 	/* Clamp Pitch */
-	if (m_Pitch > 89.0f)
-	{
-		m_Pitch = 89.0f;
-	}
-
-	if (m_Pitch < -89.0f)
-	{
-		m_Pitch = -89.0f;
-	}	
+	m_Pitch = glm::clamp(m_Pitch, -89.0f, 89.0f);
 
 	RecalculateView();
 	OnUpdate();

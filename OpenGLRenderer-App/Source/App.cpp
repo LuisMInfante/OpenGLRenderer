@@ -14,10 +14,11 @@
 #include "Texture.h"
 #include "Light.h"
 #include "Utility.h"
+#include "Material.h"
 
 int main()
 {
-    Display mainWindow(800, 600);
+    Display mainWindow(1280, 720);
     if (!mainWindow.Init())
     {
         return -1;
@@ -64,7 +65,11 @@ int main()
 
     /* Light */
     Light light(glm::vec3(1.0f, 1.0f, 1.0f), 0.1f);
-    Light directionalLight(glm::vec3(1.0f, 1.0f, 1.0f), 1.0f, glm::vec3(2.0f, 1.0f, -4.0f));
+    Light directionalLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.5f, glm::vec3(2.0f, 3.0f, -4.0f));
+
+    /* Material */
+    Material metallicMaterial(1.0f, 32.0f);
+    Material flatMaterial(0.3f, 4.0f);
 
     /* Testing Movement */
     float angle = 0.0f;
@@ -98,11 +103,13 @@ int main()
         glm::mat4 model(1.0f);
         model = glm::translate(model, glm::vec3(0.0f, 0.0f, -2.5f));
         model = glm::rotate(model, glm::radians((float)angle), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::scale(model, glm::vec3(0.5f, 0.5f, 1.0f));
+        //model = glm::scale(model, glm::vec3(0.5f, 0.5f, 1.0f));
 
+        /* Camera */
         shader.SetUniformMatrix4f("u_Model", model);
         shader.SetUniformMatrix4f("u_Projection", camera.GetProjection());
         shader.SetUniformMatrix4f("u_View", camera.GetView());
+        shader.SetUniform3f("u_CameraPosition", camera.GetPosition());
 
         /* Ambient Light */
         shader.SetUniform3f("u_Light.ambientColor", light.GetAmbientColor());
@@ -112,6 +119,10 @@ int main()
         shader.SetUniform3f("u_Light.direction", directionalLight.GetDirection());
         shader.SetUniform3f("u_Light.diffuseColor", directionalLight.GetDiffuseColor());
         shader.SetUniform1f("u_Light.diffuseIntensity", directionalLight.GetDiffuseIntensity());
+
+        /* Specular Light */
+        shader.SetUniform1f("u_Material.specularIntensity", metallicMaterial.GetSpecularIntensity());
+        shader.SetUniform1f("u_Material.metallic", metallicMaterial.GetMetallic());
 
         Renderer::Draw(mesh, shader);
 
