@@ -11,13 +11,13 @@ public:
 	Light(const glm::vec3& color, GLfloat intensity);
 	~Light();
 
-	const glm::vec3& GetAmbientColor() const { return m_AmbientColor; }
-	float GetAmbientIntensity() const { return m_AmbientIntensity; }
+	const glm::vec3& GetColor() const { return m_Color; }
+	float GetIntensity() const { return m_Intensity; }
 
-	void SetAmbientColor(const glm::vec3& color) { m_AmbientColor = color; }
-	void SetAmbientIntensity(GLfloat intensity) { m_AmbientIntensity = intensity; }
+	void SetColor(const glm::vec3& color) { m_Color = color; }
+	void SetIntensity(GLfloat intensity) { m_Intensity = intensity; }
 
 private:
-	glm::vec3 m_AmbientColor;
-	GLfloat m_AmbientIntensity;
+	glm::vec3 m_Color;
+	GLfloat m_Intensity;
 };

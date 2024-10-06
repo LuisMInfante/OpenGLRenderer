@@ -113,13 +113,13 @@ int main()
         shader.SetUniform3f("u_CameraPosition", camera.GetPosition());
 
         /* Ambient Light */
-        shader.SetUniform3f("u_Light.ambientColor", light.GetAmbientColor());
-        shader.SetUniform1f("u_Light.ambientIntensity", light.GetAmbientIntensity());
+        shader.SetUniform3f("u_Light.ambientColor", light.GetColor());
+        shader.SetUniform1f("u_Light.ambientIntensity", light.GetIntensity());
 
         /* Directional Light */
         shader.SetUniform3f("u_Light.direction", directionalLight.GetDirection());
-        shader.SetUniform3f("u_Light.diffuseColor", directionalLight.GetDiffuseColor());
-        shader.SetUniform1f("u_Light.diffuseIntensity", directionalLight.GetDiffuseIntensity());
+        shader.SetUniform3f("u_Light.diffuseColor", directionalLight.GetColor());
+        shader.SetUniform1f("u_Light.diffuseIntensity", directionalLight.GetIntensity());
 
         /* Specular Light */
         shader.SetUniform1f("u_Material.specularIntensity", metallicMaterial.GetSpecularIntensity());
