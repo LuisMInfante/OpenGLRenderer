@@ -10,6 +10,7 @@ project "OpenGLRenderer-Core"
    includedirs
    {
       "Source",
+      "Source/Public",
       "../Vendor/GLEW/include",
       "../Vendor/GLFW/include",
       "../Vendor/GLM",

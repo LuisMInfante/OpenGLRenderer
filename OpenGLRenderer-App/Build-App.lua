@@ -17,7 +17,8 @@ project "OpenGLRenderer-App"
       "../Vendor/STB",
 
 	  -- Include Core
-	  "../OpenGLRenderer-Core/Source"
+	  "../OpenGLRenderer-Core/Source",
+      "../OpenGLRenderer-Core/Source/Public"
    }
 
    links

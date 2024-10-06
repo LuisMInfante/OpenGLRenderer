@@ -11,7 +11,6 @@
 #include "Mesh.h"
 #include "Display.h"
 #include "Camera.h"
-#include "DirectionalLight.h"
 #include "Texture.h"
 #include "Light.h"
 #include "DirectionalLight.h"
