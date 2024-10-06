@@ -11,8 +11,10 @@
 #include "Mesh.h"
 #include "Display.h"
 #include "Camera.h"
+#include "DirectionalLight.h"
 #include "Texture.h"
 #include "Light.h"
+#include "DirectionalLight.h"
 #include "Utility.h"
 #include "Material.h"
 
@@ -65,7 +67,7 @@ int main()
 
     /* Light */
     Light light(glm::vec3(1.0f, 1.0f, 1.0f), 0.1f);
-    Light directionalLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.5f, glm::vec3(2.0f, 3.0f, -4.0f));
+    DirectionalLight directionalLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.5f, glm::vec3(2.0f, 3.0f, -4.0f));
 
     /* Material */
     Material metallicMaterial(1.0f, 32.0f);
