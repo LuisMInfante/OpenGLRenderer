@@ -15,7 +15,7 @@ public:
 	float GetIntensity() const { return m_Intensity; }
 
 	void SetColor(const glm::vec3& color) { m_Color = color; }
-	void SetIntensity(GLfloat intensity) { m_Intensity = intensity; }
+	void SetIntensity(const GLfloat intensity) { m_Intensity = intensity; }
 
 private:
 	glm::vec3 m_Color;

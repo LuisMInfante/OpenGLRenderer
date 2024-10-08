@@ -5,7 +5,7 @@ Light::Light()
 {
 }
 
-Light::Light(const glm::vec3& color, float intensity)
+Light::Light(const glm::vec3& color, const float intensity)
 	: m_Color(color), m_Intensity(intensity)
 {
 }

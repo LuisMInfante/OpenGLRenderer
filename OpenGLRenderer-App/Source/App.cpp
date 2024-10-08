@@ -1,5 +1,3 @@
-#include "Core/Core.h"
-
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
 #include "glm/glm.hpp"
@@ -113,17 +111,23 @@ int main()
         shader.SetUniform3f("u_CameraPosition", camera.GetPosition());
 
         /* Ambient Light */
-        shader.SetUniform3f("u_Light.ambientColor", light.GetColor());
-        shader.SetUniform1f("u_Light.ambientIntensity", light.GetIntensity());
+        shader.SetUniform3f("u_Light.color", light.GetColor());
+        shader.SetUniform1f("u_Light.intensity", light.GetIntensity());
 
         /* Directional Light */
-        shader.SetUniform3f("u_Light.direction", directionalLight.GetDirection());
-        shader.SetUniform3f("u_Light.diffuseColor", directionalLight.GetColor());
-        shader.SetUniform1f("u_Light.diffuseIntensity", directionalLight.GetIntensity());
+        shader.SetUniform3f("u_DirectionalLight.direction", directionalLight.GetDirection());
+        shader.SetUniform3f("u_DirectionalLight.color", directionalLight.GetColor());
+        shader.SetUniform1f("u_DirectionalLight.intensity", directionalLight.GetIntensity());
 
         /* Specular Light */
         shader.SetUniform1f("u_Material.specularIntensity", metallicMaterial.GetSpecularIntensity());
         shader.SetUniform1f("u_Material.metallic", metallicMaterial.GetMetallic());
+
+        /* Point Light */
+
+
+        /* SpotLight */
+
 
         Renderer::Draw(mesh, shader);
 

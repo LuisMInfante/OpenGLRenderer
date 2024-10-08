@@ -35,12 +35,15 @@ out vec4 color;
 
 struct Light
 {
-	vec3 position;
-	vec3 ambientColor;
-	vec3 diffuseColor;
+	vec3 color;
+	float intensity;
+};
+
+struct DirectionalLight
+{
 	vec3 direction;
-	float ambientIntensity;
-	float diffuseIntensity;
+	vec3 color;
+	float intensity;
 };
 
 struct Material
@@ -52,24 +55,25 @@ struct Material
 uniform vec4 u_Color;
 uniform sampler2D u_Texture;
 uniform Light u_Light;
+uniform DirectionalLight u_DirectionalLight;
 uniform Material u_Material;
 
 uniform vec3 u_CameraPosition;
 
 void main()
 {
-	vec4 ambientColor = vec4(u_Light.ambientColor, 1.0) * u_Light.ambientIntensity;
+	vec4 ambientColor = vec4(u_Light.color, 1.0) * u_Light.intensity;
 
-	float diffuseFactor = max(dot(normalize(v_Normal), normalize(u_Light.direction)), 0.0f);
-	vec4 diffuseColor = vec4(u_Light.diffuseColor, 1.0) * u_Light.diffuseIntensity * diffuseFactor;
+	float diffuseFactor = max(dot(normalize(v_Normal), normalize(u_DirectionalLight.direction)), 0.0f);
+	vec4 diffuseColor = vec4(u_DirectionalLight.color, 1.0) * u_DirectionalLight.intensity * diffuseFactor;
 
 	vec4 specularColor = vec4(0.0, 0.0, 0.0, 0.0);
 	if(diffuseFactor > 0.0)
 	{
 		vec3 viewDirection = normalize(u_CameraPosition - v_Position);
-		vec3 reflectDirection = reflect(-normalize(u_Light.direction), normalize(v_Normal));
+		vec3 reflectDirection = reflect(-normalize(u_DirectionalLight.direction), normalize(v_Normal));
 		float specularFactor = pow(max(dot(viewDirection, reflectDirection), 0.0), u_Material.metallic);
-		specularColor = vec4(u_Light.diffuseColor * u_Material.specularIntensity * specularFactor, 1.0f);
+		specularColor = vec4(u_DirectionalLight.color * u_Material.specularIntensity * specularFactor, 1.0f);
 	}
 
 	vec4 texColor = texture(u_Texture, v_TexCoord);
