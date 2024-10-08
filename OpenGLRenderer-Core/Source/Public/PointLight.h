@@ -8,6 +8,18 @@ public:
 	PointLight();
 	PointLight(const glm::vec3& color, GLfloat diffuseIntensity, const glm::vec3& position, GLfloat range, GLfloat constant, GLfloat linear, GLfloat quadratic);
 
+	glm::vec3 GetPosition() const { return m_Position; }
+	GLfloat GetRange() const { return m_Range; }
+	GLfloat GetConstant() const { return m_Constant; }
+	GLfloat GetLinear() const { return m_Linear; }
+	GLfloat GetQuadratic() const { return m_Quadratic; }
+
+	void SetPosition(const glm::vec3& position) { m_Position = position; }
+	void SetRange(const GLfloat range) { m_Range = range; }
+	void SetConstant(const GLfloat constant) { m_Constant = constant; }
+	void SetLinear(const GLfloat linear) { m_Linear = linear; }
+	void SetQuadratic(const GLfloat quadratic) { m_Quadratic = quadratic; }
+
 private:
 	glm::vec3 m_Position;
 	GLfloat m_Range;
